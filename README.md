@@ -1,616 +1,404 @@
-# mini-trello-app
-A. Frontend
+# Mini Trello - Real-Time Board Management Tool
 
-Project: Real-Time Board Management Tool ( Mini Trello App )
+A full-stack collaborative project management application built with Next.js, Firebase, and Bootstrap.
 
-Overview:
+## 🚀 Features
 
-Develop a real-time card management tool that enables teams to collaborate on cards, track tasks, and monitor progress in real-time. The application should support multiple users, card creation, task assignment, a drag-and-drop task management feature, and dynamic updates across all connected users.
+- ✅ **Authentication**: Email verification & GitHub OAuth
+- ✅ **Board Management**: Create and manage multiple boards
+- ✅ **Card System**: Organize projects with cards
+- ✅ **Task Management**: Create, update, and track tasks
+- ✅ **Drag & Drop**: Intuitive kanban-style task management
+- ✅ **Real-Time Sync**: Live updates across all connected users (via Firestore)
+- ✅ **Team Collaboration**: Invite members to boards
+- ✅ **GitHub Integration**: Link PRs, commits, and issues to tasks
+- ✅ **Responsive Design**: Works on desktop, tablet, and mobile
 
-Idea: Create a responsive web application with React.js and real-time updates with WebSocket technology.
+## 🛠️ Tech Stack
 
-1. Card Setup:
-* Initialize a new React.js card using Create React App or another preferred method. (You are also welcome to set up the app using Next.js or Vite instead of Create-React-App.)
-* Set up card dependencies, including libraries for routing, state management, and real-time updates (e.g., WebSocket library).
-2. Authentication:
-    * Connect authentication components to backend API endpoints (/auth/signup, /auth/signing).
-3. Dashboard Design:
-    * Design a dashboard layout using a responsive grid system (e.g., CSS Grid, Bootstrap grid).
-    * Create navigation components for accessing different sections of the application (e.g., cards, profile).
-    * Implement dynamic rendering of user-specific content based on authentication status.
+**Frontend:**
+- Next.js 14 (App Router)
+- TypeScript
+- Bootstrap 5 + react-bootstrap
+- @dnd-kit (Drag and Drop)
+- React Icons
 
-4. Card Management:
-    * Design and implement a card listing interface displaying all cards associated with the authenticated user.
-    * Add options for creating new cards and displaying card details.
-    * Integrate CRUD functionality for cards (GET, POST, PUT, DELETE) with backend API endpoints (/cards, /cards/:id).
+**Backend:**
+- Express.js + TypeScript
+- Node.js
+- Firebase Admin SDK
+- Nodemailer (Email verification)
+- Axios (GitHub API)
 
-5. Task Management:
-    * Develop task management components within each card, including task lists and task detail views.
-    * Implement functionality for creating, updating, and deleting tasks.
-    * Integrate real-time updates for task lists using WebSocket technology to reflect changes made by other users.
-    * Add features for task assignment, priority setting, deadline tracking, and status updates.
-    * Use a library like React DnD (Drag and Drop for React) to handle drag-and-drop interactions.
-    * Configure draggable and droppable areas within the card interface.
-    * Enable users to drag tasks from one location to another, such as between task lists or within a card board ( You can create some default status card boards like icebox, backlog, on going, waiting for review, done).
-    * 
-6. List Users
-    * Create a list users component for viewing and editing to manage account settings.
-    * Connect profile components to backend API endpoints for updating user information (/users/:id).
+**Database & Services:**
+- Firebase Authentication
+- Firebase Firestore (Database)
+- Firebase Hosting (Deployment)
+- GitHub OAuth
 
-7. Styling and UI Enhancements:
-    * Apply consistent styling using CSS frameworks (e.g., Bootstrap, Material UI) or CSS preprocessors (e.g., Sass, Less).
-    * Implement responsive design principles to ensure the application is usable across different devices and screen sizes.
-    * Enhance user experience with animations, transitions, and interactive elements.
-  
-B. Backend 
-You must create an Express backend. Follow this simple tutorial to start one within 5 minutes (https://medium.com/@onejohi/building-a-simple-rest-api-with-nodejs-and-express-da6273ed7ca9)
+**Key Libraries:**
+- `firebase` - Firebase SDK
+- `firebase-admin` - Firebase Admin SDK for backend
+- `express` - Web server framework
+- `@dnd-kit/core` & `@dnd-kit/sortable` - Drag and drop
+- `react-bootstrap` - UI components
+- `date-fns` - Date formatting
+- `nodemailer` - Email sending
+- `jsonwebtoken` - JWT tokens
 
-You can create as many functions in the back-end as you want, but the back-end must have these functions:
+## 📋 Prerequisites
 
-* GitHub Integration:
-    * Enables users to sign in with GitHub OAuth, offering additional authentication options.
-    * Provides API endpoints for initiating GitHub sign-in process and exchanging authorization codes for access tokens.
+Before you begin, ensure you have:
 
-Sure, let's update the backend API routes for card and task management, as well as authentication:
+- Node.js 18+ installed
+- npm or yarn package manager
+- A Firebase account (free tier is sufficient)
+- (Optional) A GitHub account for OAuth integration
 
-Board Management API Endpoints:
+## 🔧 Installation & Setup
 
-1.  Create a New Board: 
+### 1. Clone the Repository
 
-   - Endpoint: `/boards`
-   - Method: POST
-   - Description: Creates a new board.
-   - Authorization: User JWT token
-   - Request Body:
-      
-     {
-       "name": "Board Name",
-       "description": "Board Description"
-     }
-      
-   - Response:
-     - Success (201 Created):
-        
-       {
-         "id": "new_board_id",
-         "name": "Board Name",
-         "description": "Board Description"
-       }
-        
+```bash
+git clone <your-repo-url>
+cd mini-trello-app
+```
 
-2.  Retrieve All Boards: 
+### 2. Install Dependencies
 
-   - Endpoint: `/boards`
-   - Method: GET
-   - Description: Retrieves all boards associated with the authenticated user.
-   - Authorization: User JWT token
-   - Response:
-     - Success (200 OK):
-        
-       [
-         {
-           "id": "board_id_1",
-           "name": "Board Name 1",
-           "description": "Board Description 1"
-         },
-         {
-           "id": "board_id_2",
-           "name": "Board Name 2",
-           "description": "Board Description 2"
-         },
-         ...
-       ]
-        
+```bash
+npm install
+```
 
-3.  Retrieve Board Details: 
+### 3. Firebase Setup
 
-   - Endpoint: `/boards/:id`
-   - Method: GET
-   - Description: Retrieves d etails of a specific board.
-   - Authorization: User JWT token
-   - Response:
-     - Success (200 OK):
-        
-       {
-         "id": "board_id",
-         "name": "Board Name",
-         "description": "Board Description"
-       }
-        
+#### Create a Firebase Project
 
-4.  Update Board Details: 
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Click "Add project"
+3. Enter project name: `mini-trello-app`
+4. Disable Google Analytics (optional)
+5. Click "Create project"
 
-   - Endpoint: `/boards/:id`
-   - Method: PUT
-   - Description: Updates details of a specific board.
-   - Authorization: User JWT token
-   - Request Body:
-      
-     {
-       "name": "New Board Name",
-       "description": "New Board Description"
-     }
-      
-   - Response:
-     - Success (200 OK):
-        
-       {
-         "id": "board_id",
-         "name": "New Board Name",
-         "description": "New Board Description"
-       }
-        
+#### Enable Authentication
 
-5.  Delete Board: 
+1. In Firebase Console, go to **Authentication** > **Sign-in method**
+2. Enable **Email/Password**
+3. Enable **GitHub** (optional):
+   - Go to [GitHub Developer Settings](https://github.com/settings/developers)
+   - Create a new OAuth App
+   - Copy Client ID and Client Secret to Firebase
 
-   - Endpoint: `/boards/:id`
-   - Method: DELETE
-   - Description: Deletes a specific board.
-   - Authorization: User JWT token
-   - Response:
-     - Success (204 No Content): No content in response body. Board successfully deleted.
+#### Create Firestore Database
 
+1. Go to **Firestore Database**
+2. Click "Create database"
+3. Start in **production mode**
+4. Choose a location close to your users
 
-Card Management API Endpoints:
+#### Update Firestore Rules
 
-1.   Retrieve All cards:
-   -   Endpoint:   `/boards/:boardId/cards`
-   -   Method:   GET
-   -   Description:   Retrieves all cards associated with the authenticated user.
-   -   Authorization:   User JWT token
-   -   Response:  
-     - Success (200 OK):
-         
-       [
-         {
-           "id": "card_id",
-           "name": "card Name",
-           "description": "card Description"
-         },
-         {
-           "id": "card_id",
-           "name": "card Name",
-           "description": "card Description"
-         }
-       ]
-       
+Go to **Firestore Database** > **Rules** and paste:
 
-2.   Create a New card:  ( Any cards about games, software, marketing… )
-   -   Endpoint:   `/boards/:boardId/cards`
-   -   Method:   POST
-   -   Description:   Creates a new card.
-   -   Authorization:   User JWT token
-   -   Request Body:  
-       
-     {
-       "name": "card Name",
-       "description": "card Description",
-        “createdAt: “”,
-     }
-     
-   -   Response:  
-     - Success (201 Created):
-         
-       {
-         "id": "new_card_id",
-         "name": "card Name",
-         "description": "card Description"
-       }
-       
-
-3.   Retrieve card Details:  
-   -   Endpoint:   `/boards/:boardId/cards/:id`
-   -   Method:   GET
-   -   Description:   Retrieves details of a specific card.
-   -   Authorization:   User JWT token
-   -   Response:  
-     - Success (200 OK):
-         
-       {
-         "id": "card_id",
-         "name": "card Name",
-         "description": "card Description"
-       }
-       
-
-4. Retrieve cards by User:
-
-- Endpoint: `/boards/:boardId/cards/user/:user_id`
-- Method: GET
-- Description: Retrieves cards associated with a specific user.
-- Authorization: User JWT token
-- Response:  Success (200 OK):
-    [
-      {
-        "id": "card_id_1",
-        "name": "card Name 1",
-        "description": "card Description 1"
-        “ tasks_count: “4”,
-       “list_member: [“member_id”, …],
-        “createdAt: “”,
-      },
-      {
-        "id": "card_id_2",
-        "name": "card Name 2",
-        "description": "card Description 2",
-        “tasks_count”: “2”,
-        “list_member: [“member_id”, …]
-       “createdAt: “”,
-      },
-      ...
-    ]
-   
- 
-
-5.   Update card Details:  
-   -   Endpoint:   `/boards/:boardId/cards/:id`
-   -   Method:   PUT
-   -   Description:   Updates details of a specific card.
-   -   Authorization:   User JWT token
-   -   Request Body:  
-       
-     {
-       "name": "Updated card Name",
-       "description": "Updated card Description"
-       “params”: ”extra fields needed”
-     }
-     
-   -   Response:  
-     - Success (200 OK):
-         
-       {
-         "id": "card_id",
-         "name": "Updated card Name",
-         "description": "Updated card Description"
-       }
-       
-6. Invite people to a board:
-
- -   Endpoint:   `/boards/:boardId/invite`
- -   Method:   POST
- - Description: Invite members to a board. The status will have 3 status pending, accepted, declined, you can use socket io or sending email to notify member received invitation. 
-   -   Authorization:   User JWT token
-   -   Request Body:  
-       
-     {
-       “invite_id: “id of invitation”
-       “board_owner_id”: “Id of card owner”
-       “member _id”: “Id of member”,
-       “email_member”:  “Email of member” (optional)
-       “status”: “pending”
-     }
-     
-   -   Response:  
-     - Success (200 OK):
-       {
-         {success: true}
-       }
-
-Endpoint: /boards/:boardId/cards/:id/invite/accept
-* Method: POST
-* Description: Accept a card invitation.
-* Authorization: User JWT token
-* Request Body:
-
-{
- "invite_id": "id of invitation",
- "card_id": "Id of card",
- "member_id": "Id of accepting member",
- "status": "accepted" or “declined
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User must be authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    // User owns the document
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(userId);
+    }
+    
+    // Boards collection
+    match /boards/{boardId} {
+      allow read: if isSignedIn() && 
+                     resource.data.members.hasAny([request.auth.uid]);
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && 
+                                resource.data.ownerId == request.auth.uid;
+    }
+    
+    // Cards collection
+    match /cards/{cardId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn();
+    }
+    
+    // Tasks collection
+    match /tasks/{taskId} {
+      allow read, write: if isSignedIn();
+    }
+    
+    // Invitations collection
+    match /invitations/{invitationId} {
+      allow read, write: if isSignedIn();
+    }
+    
+    // GitHub attachments
+    match /github_attachments/{attachmentId} {
+      allow read, write: if isSignedIn();
+    }
+    
+    // Verification codes
+    match /verification_codes/{codeId} {
+      allow read, write: if isSignedIn();
+    }
+  }
 }
+```
 
-7.   Delete a card:  
-   -   Endpoint:   `/boards/:boardId/cards/:id`
-   -   Method:   DELETE
-   -   Description:   Deletes a specific card.
-   -   Authorization:   User JWT token
-   -   Response:  
-     - Success (204 No Content)
+#### Get Firebase Configuration
 
-Task Management API Endpoints:  
+1. Go to **Project Settings** (gear icon)
+2. Scroll to "Your apps"
+3. Click the **Web** icon (`</>`)
+4. Register your app
+5. Copy the `firebaseConfig` object
 
-1.   Retrieve All Tasks of a card:  
-   -   Endpoint:   `/boards/:boardId/cards/:id/tasks`
-   -   Method:   GET
-   -   Description:   Retrieves all tasks associated with a specific card.
-   -   Authorization:   User JWT token
-   -   Response:  
-     - Success (200 OK):
-       [
-         {
-           "id": "task_id",
-           "cardId": "card_id",
-           "title": "Task Title",
-           "description": "Task Description",
-           "status": "Task Status"
-         },
-         {
-           "id": "task_id",
-           "cardId": "card_id",
-           "title": "Task Title",
-           "description": "Task Description",
-           "status": "Task Status"
-         }
-       ]
-       
+### 4. Environment Variables
 
-2.   Create a New Task within a card:  
-   -   Endpoint:   `/boards/:boardId/cards/:id/tasks`
-   -   Method:   POST
-   -   Description:   Creates a new task within a card.
-   -   Authorization:   User JWT token
-   -   Request Body:  
-       
-     {
-       "title": "Task Title",
-       "description": "Task Description",
-       "status": "Task Status"
-     }
-     
-   -   Response:  
-     - Success (201 Created):
-         
-       {
-         "id": "new_task_id",
-         "cardId": "card_id",
-         “ownerId”: “id of user”
-         "title": "Task Title",
-         "description": "Task Description",
-         "status": "Task Status"
-       }
-       
+Create a `.env.local` file in the root directory:
 
-3.   Retrieve Task Details within a card:  
-   -   Endpoint:   `/boards/:boardId/cards/:id/tasks/:taskId`
-   -   Method:   GET
-   -   Description:   Retrieves details of a specific task within a card.
-   -   Authorization:   User JWT token
-   -   Response:  
-     - Success (200 OK):
-         
-       {
-         "id": "task_id",
-         "cardId": "card_id",
-         "title": "Task Title",
-         "description": "Task Description",
-         "status": "Task Status"
-       }
-       
+```bash
+cp .env.example .env.local
+```
 
-4.   Update Task Details within a card:  
-   -   Endpoint:   `/boards/:boardId/cards/:id/tasks/:taskId`
-   -   Method:   PUT
-   -   Description:   Updates details of a specific task within a card.
-   -   Authorization:   User JWT token
-   -   Request Body:  
-       
-     {
-       “id”: “task_id”
-       “card_owner_id”: “card_owner_id”,
-       “card_id”:”current_card_id”,
-     }
-     
-   -   Response:  
-     - Success (200 OK):
-         
-       {
-         "id": "task_id",
-         "cardId": “card_id",
-       }
-       
+Fill in your Firebase credentials:
 
-5.   Delete a Task within a card:  
-   -   Endpoint:   `/boards/:boardId/cards/:id/tasks/:taskId`
-   -   Method:   DELETE
-   -   Description:   Deletes a specific task within a card.
-   -   Authorization:  User JWT token
-   -   Response:  Success (204 No Content)
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key_here
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
-6. Assign Member to a Task:
-   - Endpoint: `/boards/:boardId/cards/:id/tasks/:taskId/assign`
-   - Method: POST
-   - Description: Assign a member to a specific task within a card.
-   - Authorization: User JWT token
-   - Request Body:
-     
-     {
-       "memberId": "member_id"
-     }
-     
-   - Response:
-     - Success (201 Created):
-       
-       {
-         "taskId": "task_id",
-         "memberId": "member_id"
-       }
-       
+# Optional: GitHub OAuth
+NEXT_PUBLIC_GITHUB_CLIENT_ID=your_github_client_id
+```
 
-7. Retrieve Assigned Members of a Task:
-   - Endpoint: `/boards/:boardId/cards/:id/tasks/:taskId/assign`
-   - Method: GET
-   - Description: Retrieve all members assigned to a specific task within a card.
-   - Authorization: User JWT token
-   - Response: Success (200 OK):
-       [
-         {
-           "taskId": "task_id",
-           "memberId": "member_id"
-         },
-         {
-           "taskId": "task_id",
-           "memberId": "member_id"
-         }
-       ]
-       
+### 5. Run Development Server
 
-8. Remove Member Assignment from a Task:
-   - Endpoint: `/boards/:boardId/cards/:id/tasks/:taskId/assign/:memberId`
-   - Method: DELETE
-   - Description: Remove a member assignment from a specific task within a card.
-   - Authorization: User JWT token
-   - Response:
-     - Success (204 No Content)
+**Option 1: Run Frontend Only**
+```bash
+npm run dev
+```
 
+**Option 2: Run Backend Only**
+```bash
+npm run server
+```
 
+**Option 3: Run Both Together (Recommended)**
+```bash
+npm run dev:all
+```
 
-9. Display All GitHub Information for a Repository:
-- Endpoint: `/repositories/:repositoryId/github-info`
-- Method: GET
-- Description: Retrieve all GitHub information (branches, pull requests, issues, commits) related to a specific repository.
-- Authorization: User JWT token
-- Response:
-  - Success (200 OK):
-    {
-      "repositoryId": "repository_id",
-      "branches": [
-        {
-          "name": "branch_name",
-          "lastCommitSha": "last_commit_sha"
-        },
-        {
-          "name": "branch_name",
-          "lastCommitSha": "last_commit_sha"
-        }
-      ],
-      "pulls": [
-        {
-          "title": "pull_request_title",
-          "pullNumber": "pull_request_number"
-        },
-        {
-          "title": "pull_request_title",
-          "pullNumber": "pull_request_number"
-        }
-      ],
-      "issues": [
-        {
-          "title": "issue_title",
-          "issueNumber": "issue_number"
-        },
-        {
-          "title": "issue_title",
-          "issueNumber": "issue_number"
-        }
-      ],
-      "commits": [
-        {
-          "sha": "commit_sha",
-          "message": "commit_message"
-        },
-        {
-          "sha": "commit_sha",
-          "message": "commit_message"
-        }
-      ]
-    }
+Open [http://localhost:3000](http://localhost:3000) for frontend.
+Backend API runs on [http://localhost:5000](http://localhost:5000).
 
-10. Attach GitHub Pull Request, Commit, or Issue to a Task:
-- Endpoint: `/boards/:boardId/cards/:cardId/tasks/:taskId/github-attach`
-- Method: POST
-- Description: Attach a GitHub pull request, commit, or issue to a specific task within a card.
-- Authorization: User JWT token
-- Request Body:
-  {
-    "type": "pull_request",
-    "number": "pull_request_number"
-  }
-  
-  Possible values for `"type"`: `"pull_request"`, `"commit"`, `"issue"`
-- Response: Success (201 Created):  
-    {
-      "taskId": "task_id",
-      "attachmentId": "attachment_id",
-      "type": "pull_request",
-      "number": "pull_request_number"
-    }
-    
+**See `server/BACKEND_GUIDE.md` for detailed backend documentation.**
 
- 11. Retrieve Attached GitHub Attachments of a Task:
-- Endpoint: `/boards/:boardId/cards/:cardId/tasks/:taskId/github-attachments`
-- Method: GET
-- Description: Retrieve all GitHub attachments (pull requests, commits, issues) attached to a specific task within a card.
-- Authorization: User JWT token
-- Response:
-  - Success (200 OK):
-    
-    [
-      {
-        "attachmentId": "attachment_id",
-        "type": "pull_request",
-        "number": "pull_request_number"
-      },
-      {
-        "attachmentId": "attachment_id",
-        "type": "commit",
-        "sha": "commit_sha"
-      },
-      {
-        "attachmentId": "attachment_id",
-        "type": "issue",
-        "number": "issue_number"
-      }
-    ]
-    
+## 📁 Project Structure
 
-12. Remove GitHub Attachment from a Task:
--Endpoint: `/boards/:boardId/cards/:cardId/tasks/:taskId/github-attachments/:attachmentId`
-- Method: DELETE
-- Description: Remove a GitHub attachment (pull request, commit, issue) attached to a specific task within a card.
-- Authorization: User JWT token
-- Response: Success (204 No Content)
+```
+mini-trello-app/
+├── app/                      # Next.js app directory
+│   ├── auth/                # Authentication pages
+│   │   ├── signin/         # Sign in page
+│   │   └── signup/         # Sign up page
+│   ├── dashboard/          # Protected dashboard
+│   │   ├── boards/        # Board detail pages
+│   │   └── page.tsx       # Dashboard home
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Landing page
+│   └── globals.css        # Global styles
+├── components/             # Reusable components
+│   ├── NavigationBar.tsx  # Top navigation
+│   ├── ProtectedRoute.tsx # Auth guard
+│   └── TaskCard.tsx       # Draggable task card
+├── contexts/              # React contexts
+│   └── AuthContext.tsx    # Authentication state
+├── lib/                   # Utility functions
+│   ├── auth.ts           # Auth helpers
+│   ├── firebase.ts       # Firebase config
+│   └── firestore.ts      # Database operations
+├── server/                # Express.js backend ⭐ NEW
+│   ├── src/
+│   │   ├── config/       # Backend configuration
+│   │   ├── controllers/  # Request handlers
+│   │   ├── middleware/   # Auth middleware
+│   │   ├── routes/       # API routes
+│   │   ├── types/        # TypeScript types
+│   │   └── server.ts     # Main server file
+│   ├── BACKEND_GUIDE.md  # Backend documentation
+│   └── tsconfig.json     # TypeScript config
+├── types/                # TypeScript types
+│   └── index.ts          # Type definitions
+├── public/               # Static assets
+├── .env.example          # Environment template
+├── next.config.js        # Next.js config
+├── package.json          # Dependencies
+└── tsconfig.json         # TypeScript config
+```
 
-With this endpoint, when a user clicks on a repository, your system can fetch all relevant information (branches, pull requests, issues, commits) from GitHub and display it accordingly. This provides a comprehensive overview of the repository's activity and status, helping users stay informed about its development.
+## 🎯 Usage Guide
 
-To implement authentication without using passwords and instead sending a code to the user's email for verification, you can modify the authentication API endpoints as follows:
+### Creating Your First Board
 
-Authentication API Endpoints:
+1. Sign up or sign in
+2. Click "Create Your First Board" or the "+" button
+3. Enter board name and description
+4. Click "Create Board"
 
-1. User Signup:
-   - Endpoint: `/auth/signup`
-   - Method: POST
-   - Description: Creates a new user account.
-   - Request Body:
-     
-     {
-       "email": "user@example.com",
-       “verificationCode”: “code_compare_to_code_from_email”
-     }
-     
-   - Response:
-     - Success (201 Created):
-       {
-         "id": "user_id",
-         "email": "user@example.com"
-       }
-       
-2. User Sign In (with Email Verification):
-   - Endpoint: `/auth/signin`
-   - Method: POST
-   - Description: Authenticates existing users by sending a verification code to the user's email and comparing it to the code in the databases.
-   - Request Body:
-     
-     {
-       "email": "user@example.com",
-       "verificationCode": "code_received_via_email"
-     }
-     
-   - Response:
-     - Success (200 OK):
-       
-       {
-         "accessToken": "jwt_access_token"
-       }
-     
-     - Error (401 Unauthorized):
-   
-       {
-         "error": "Invalid email or verification code"
-       }
-       
+### Managing Cards & Tasks
 
-For the signup process, the user provides their email address, and then you can send a verification code to that email for account creation.
+1. Open a board
+2. Click "Add Card" to create a project card
+3. Click "Add Task" on any card
+4. Choose task status (Icebox, Backlog, Ongoing, Waiting for Review, Done)
+5. Drag and drop tasks between columns
 
-For the signin process, the user provides their email and the verification code received via email which is matched with verification code in databases. Upon successful verification, the user is issued a JWT access token for authentication.
+### Inviting Team Members
 
-You can use nodemailer in your backend to send emails containing the verification codes. Once the user enters the correct code, you can authenticate them and issue an access token.
+1. Open a board
+2. Click "Invite Members"
+3. Enter member email
+4. Member receives invitation notification
+
+### Task Statuses
+
+- **Icebox**: Ideas and future tasks
+- **Backlog**: Planned tasks
+- **Ongoing**: Currently in progress
+- **Waiting for Review**: Pending review
+- **Done**: Completed tasks
+
+## 🚀 Deployment
+
+### Deploy to Firebase Hosting
+
+1. Install Firebase CLI:
+```bash
+npm install -g firebase-tools
+```
+
+2. Login to Firebase:
+```bash
+firebase login
+```
+
+3. Initialize Firebase:
+```bash
+firebase init hosting
+```
+
+Select:
+- Use existing project
+- Public directory: `out`
+- Configure as single-page app: `Yes`
+- Set up automatic builds: `No`
+
+4. Update `package.json` scripts:
+```json
+{
+  "scripts": {
+    "build": "next build",
+    "export": "next export",
+    "deploy": "npm run build && npm run export && firebase deploy"
+  }
+}
+```
+
+5. Update `next.config.js`:
+```javascript
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+}
+```
+
+6. Deploy:
+```bash
+npm run deploy
+```
+
+### Deploy to Vercel (Alternative)
+
+1. Push code to GitHub
+2. Go to [Vercel](https://vercel.com)
+3. Import your repository
+4. Add environment variables from `.env.local`
+5. Deploy
+
+## 🔐 Security Notes
+
+1. **Never commit** `.env.local` to version control
+2. Keep Firebase API keys secure (restrict in Firebase Console)
+3. Update Firestore security rules for production
+4. Enable App Check in Firebase for additional security
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Build errors:**
+```bash
+rm -rf .next node_modules
+npm install
+npm run dev
+```
+
+**Firebase connection issues:**
+- Verify `.env.local` credentials
+- Check Firebase project is active
+- Ensure Firestore and Authentication are enabled
+
+**Drag and drop not working:**
+- Check @dnd-kit dependencies are installed
+- Clear browser cache
+- Ensure tasks have unique IDs
+
+## 📚 Additional Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [Bootstrap Documentation](https://getbootstrap.com/docs)
+- [dnd-kit Documentation](https://docs.dndkit.com/)
+
+## 📝 TODO / Future Enhancements
+
+- [ ] Email verification code sending (Nodemailer integration)
+- [ ] GitHub repository linking
+- [ ] Task comments and activity log
+- [ ] File attachments
+- [ ] Due date reminders
+- [ ] Advanced filtering and search
+- [ ] Board templates
+- [ ] Mobile app (React Native)
+
+## 📄 License
+
+MIT License - feel free to use this project for learning or commercial purposes.
+
+## 👥 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+Built with ❤️ using Next.js, Firebase, and Bootstrap
