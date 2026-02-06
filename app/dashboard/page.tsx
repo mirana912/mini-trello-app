@@ -1,4 +1,4 @@
-// src/app/dashboard/boards/page.tsx
+// src/app/dashboard/page.tsx
 // ==========================================
 "use client";
 
