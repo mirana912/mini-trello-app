@@ -24,41 +24,48 @@ import { auth } from "../../../lib/firebase";
 
 export default function SignInPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [codeSent, setCodeSent] = useState(false);
+
+  // User Input Management
+  const [userEmail, setUserEmail] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isCodeSent, setIsCodeSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Handle sending verification code to user's email
   const handleSendCode = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      await sendVerificationCode(email);
-      setCodeSent(true);
-      alert(`Verification code is sent to ${email}. Please check your email.`);
-    } catch (err: any) {
-      setError(err.message);
+      await sendVerificationCode(userEmail);
+      setIsCodeSent(true);
+      alert(
+        `Verification code is sent to ${userEmail}. Please check your email.`,
+      );
+    } catch (error: any) {
+      setError(error.message);
+      console.log("Error sending code:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // Process user login with verification code
   const handleSignIn = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const isValid = await verifyCode(email, code);
-      if (!isValid) {
-        throw new Error("Invalid verification code.");
+      const codeIsValid = await verifyCode(userEmail, verificationCode);
+      if (!codeIsValid) {
+        throw new Error("The verification code you entered is invalid.");
       }
       try {
-        await signInWithEmailAndPassword(auth, email, code);
-      } catch {
+        await signInWithEmailAndPassword(auth, userEmail, verificationCode);
+      } catch (loginError) {
         alert("User not found. Please sign up first.");
         router.push("/auth/signup");
         return;
@@ -71,18 +78,21 @@ export default function SignInPage() {
     }
   };
 
+  // Handle GitHub OAuth login
   const handleGitHubSignIn = async () => {
     setError("");
     setLoading(true);
     try {
       await signInWithGitHub();
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (error: any) {
+      setError(error.message);
+      console.log("GitHub login failed:", error);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <Container className="min-vh-100 d-flex align-items-center justify-content-center">
       <Row className="w-100">
@@ -94,15 +104,15 @@ export default function SignInPage() {
                 <p className="text-muted">Sign in to your account</p>
               </div>
               {error && <Alert variant="danger">{error}</Alert>}
-              {!codeSent ? (
+              {!isCodeSent ? (
                 <Form onSubmit={handleSendCode}>
                   <Form.Group className="mb-3">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
                       type="email"
                       placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
                       required
                       disabled={loading}
                     />
@@ -124,8 +134,8 @@ export default function SignInPage() {
                     <Form.Control
                       type="text"
                       placeholder="Enter 6-digit code"
-                      value={code}
-                      onChange={(e) => setCode(e.target.value)}
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
                       required
                       maxLength={6}
                       disabled={loading}
@@ -145,7 +155,7 @@ export default function SignInPage() {
                   <Button
                     variant="link"
                     className="w-100 text-muted"
-                    onClick={() => setCodeSent(false)}
+                    onClick={() => setIsCodeSent(false)}
                     disabled={loading}
                   >
                     Use different email

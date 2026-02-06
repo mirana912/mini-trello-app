@@ -22,66 +22,67 @@ import { createUser } from "@/lib/firestore";
 
 export default function SignUpPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [code, setCode] = useState("");
-  const [codeSent, setCodeSent] = useState(false);
+
+  // User input states
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isCodeSent, setIsCodeSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSendCode = async (e: React.FormEvent) => {
+  // Send verification code to user's email address
+  const handleSendCode = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      // Send verification code to email
-      await sendVerificationCode(email);
-      setCodeSent(true);
-      alert(`Verification code sent to ${email}. Check your email!`);
-    } catch (err: any) {
-      setError(err.message);
+      await sendVerificationCode(userEmail);
+      setIsCodeSent(true);
+      alert(`Verification code sent to ${userEmail}. Please check your email!`);
+    } catch (error: any) {
+      setError(error.message);
+      console.log("Failed to send verification code:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  // Create new user account
+  const handleSignUp = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      // Verify the code
-      const isValid = await verifyCode(email, code);
+      const isValid = await verifyCode(userEmail, verificationCode);
 
       if (!isValid) {
-        throw new Error("Invalid verification code");
+        throw new Error("Invalid verification code. Please try again.");
       }
-
-      // Create user in Firebase Auth (using code as temporary password)
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        email,
-        code,
+        userEmail,
+        verificationCode,
       );
       const user = userCredential.user;
-
-      // Create user profile in Firestore
-      await createUser(user.uid, email, displayName);
-
+      await createUser(user.uid, userEmail, userName);
       router.push("/dashboard");
-    } catch (err: any) {
-      if (err.code === "auth/email-already-in-use") {
+    } catch (error: any) {
+      // Handle duplicate email error
+      if (error.code === "auth/email-already-in-use") {
         setError("This email is already registered. Please sign in instead.");
       } else {
-        setError(err.message);
+        setError(error.message);
       }
+      console.log("Account creation failed:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // Register with GitHub OAuth
   const handleGitHubSignUp = async () => {
     setError("");
     setLoading(true);
@@ -89,8 +90,9 @@ export default function SignUpPage() {
     try {
       await signInWithGitHub();
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (error: any) {
+      setError(error.message);
+      console.log("GitHub registration error:", error);
     } finally {
       setLoading(false);
     }
@@ -109,15 +111,15 @@ export default function SignUpPage() {
 
               {error && <Alert variant="danger">{error}</Alert>}
 
-              {!codeSent ? (
+              {!isCodeSent ? (
                 <Form onSubmit={handleSendCode}>
                   <Form.Group className="mb-3">
                     <Form.Label>Display Name</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Enter your name"
-                      value={displayName}
-                      onChange={(e) => setDisplayName(e.target.value)}
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
                       required
                       disabled={loading}
                     />
@@ -128,8 +130,8 @@ export default function SignUpPage() {
                     <Form.Control
                       type="email"
                       placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
                       required
                       disabled={loading}
                     />
@@ -149,9 +151,9 @@ export default function SignUpPage() {
                 <Form onSubmit={handleSignUp}>
                   <Alert variant="info" className="mb-3">
                     <small>
-                      <strong>Email:</strong> {email}
+                      <strong>Email:</strong> {userEmail}
                       <br />
-                      <strong>Name:</strong> {displayName}
+                      <strong>Name:</strong> {userName}
                     </small>
                   </Alert>
 
@@ -160,8 +162,8 @@ export default function SignUpPage() {
                     <Form.Control
                       type="text"
                       placeholder="Enter 6-digit code"
-                      value={code}
-                      onChange={(e) => setCode(e.target.value)}
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
                       required
                       maxLength={6}
                       disabled={loading}
@@ -183,7 +185,7 @@ export default function SignUpPage() {
                   <Button
                     variant="link"
                     className="w-100 text-muted"
-                    onClick={() => setCodeSent(false)}
+                    onClick={() => setIsCodeSent(false)}
                     disabled={loading}
                   >
                     Use different email

@@ -3,7 +3,7 @@
 import admin from "firebase-admin";
 import { config } from "./index";
 
-let firebaseApp: admin.app.App;
+let firebaseApp: any;
 
 export const initializeFirebaseAdmin = () => {
   if (!firebaseApp) {
