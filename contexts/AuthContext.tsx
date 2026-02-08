@@ -4,8 +4,8 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User as FirebaseUser } from "firebase/auth";
-import { onAuthChange, signOut as authSignOut } from "@/lib/auth";
 import { getUser } from "@/lib/firestore";
+import { onAuthChange, signOut as authSignOut } from "@/lib/auth";
 import type { User } from "@/types";
 
 interface AuthContextType {

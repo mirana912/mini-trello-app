@@ -4,8 +4,8 @@
 
 import { Card, Badge } from "react-bootstrap";
 import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { FaUser, FaClock } from "react-icons/fa";
+import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 

@@ -4,8 +4,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Container } from "react-bootstrap";
 import { useAuth } from "@/contexts/AuthContext";
+import { Container } from "react-bootstrap";
 
 export default function ProtectedRoute({
   children,
