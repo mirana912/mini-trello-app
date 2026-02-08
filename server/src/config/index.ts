@@ -41,7 +41,7 @@ export const config = {
 
 // Validate required config
 export const validateConfig = () => {
-  const required = ["jwtSecret", "githubClientId", "githubClientSecret"];
+  const required = ["jwt", "githubClientId", "githubClientSecret"];
 
   const missing = required.filter((key) => !config[key as keyof typeof config]);
 
