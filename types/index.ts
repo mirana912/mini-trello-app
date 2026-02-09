@@ -17,7 +17,7 @@ export interface Board {
   name: string;
   description: string;
   ownerId: string;
-  members: string[]; // Array of user IDs
+  members: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,7 +29,7 @@ export interface Card {
   name: string;
   description: string;
   ownerId: string;
-  members: string[]; // Array of user IDs
+  members: string[];
   tasksCount: number;
   createdAt: Date;
   updatedAt: Date;
@@ -52,10 +52,10 @@ export interface Task {
   description: string;
   status: TaskStatus;
   ownerId: string;
-  assignedTo: string[]; // Array of user IDs
+  assignedTo: string[];
   priority?: "low" | "medium" | "high";
   deadline?: Date;
-  order: number; // For drag-and-drop ordering
+  order: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -81,8 +81,8 @@ export interface GitHubAttachment {
   id: string;
   taskId: string;
   type: GitHubAttachmentType;
-  number?: string; // For PRs and issues
-  sha?: string; // For commits
+  number?: string;
+  sha?: string;
   title?: string;
   url?: string;
   createdAt: Date;

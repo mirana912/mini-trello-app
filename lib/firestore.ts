@@ -44,10 +44,7 @@ export const COLLECTIONS = {
   VERIFICATION_CODES: "verification_codes",
 };
 
-// ====================
 // USER OPERATIONS
-// ====================
-
 export const createUser = async (
   userId: string,
   email: string,
@@ -98,10 +95,7 @@ export const getAllUsers = async (): Promise<User[]> => {
   })) as User[];
 };
 
-// ====================
 // BOARD OPERATIONS
-// ====================
-
 export const createBoard = async (
   name: string,
   description: string,
@@ -172,10 +166,7 @@ export const deleteBoard = async (boardId: string): Promise<void> => {
   await deleteDoc(boardRef);
 };
 
-// ====================
 // CARD OPERATIONS
-// ====================
-
 export const createCard = async (
   boardId: string,
   name: string,
@@ -266,10 +257,7 @@ export const deleteCard = async (cardId: string): Promise<void> => {
   await deleteDoc(cardRef);
 };
 
-// ====================
 // TASK OPERATIONS
-// ====================
-
 export const createTask = async (
   boardId: string,
   cardId: string,
@@ -386,10 +374,7 @@ export const deleteTask = async (taskId: string): Promise<void> => {
   await deleteDoc(taskRef);
 };
 
-// ====================
 // INVITATION OPERATIONS
-// ====================
-
 export const createInvitation = async (
   boardId: string,
   boardOwnerId: string,
@@ -472,10 +457,7 @@ export const updateInvitation = async (
   }
 };
 
-// ====================
 // GITHUB ATTACHMENT OPERATIONS
-// ====================
-
 export const createGitHubAttachment = async (
   taskId: string,
   type: GitHubAttachment["type"],

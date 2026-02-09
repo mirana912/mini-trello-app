@@ -39,13 +39,15 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules","server"
+    "node_modules",
+    "server"
   ],
   "ts-node": {
     "transpileOnly": true,
     "files": true,
     "compilerOptions": {
-      "module": "commonjs"
+      "module": "ESNext",
+      "moduleResolution": "bundler"
     }
   }
 }

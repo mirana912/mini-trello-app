@@ -43,3 +43,6 @@ firebase-debug.log
 # IDE
 .vscode/
 .idea/
+
+#README
+README-backup.md

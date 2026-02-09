@@ -9,8 +9,8 @@ import {
   GitHubPullRequest,
   GitHubIssue,
   GitHubCommit,
-} from "../types";
-import { getFirestore } from "../config/firebase";
+} from "../types/index.js";
+import { getFirestore } from "../config/firebase.js";
 
 /**
  * Get user's GitHub repositories

@@ -2,8 +2,8 @@
 // ==========================================
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import { config, validateConfig } from "./config";
-import { initializeFirebaseAdmin } from "./config/firebase";
+import { config, validateConfig } from "./config/index.js";
+import { initializeFirebaseAdmin } from "./config/firebase.js";
 
 // Import routes
 import authRoutes from "./routes/auth";

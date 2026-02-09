@@ -2,9 +2,9 @@
 // ==========================================
 import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { getFirebaseAuth } from "../config/firebase";
-import { config } from "../config";
-import { AuthRequest } from "../types";
+import { getFirebaseAuth } from "../config/firebase.js";
+import { config } from "../config/index.js";
+import { AuthRequest } from "../types/index.js";
 
 // Verify Firebase token
 export const verifyFirebaseToken = async (
@@ -92,9 +92,7 @@ export const optionalAuth = async (
         displayName: decodedToken.name,
       };
     }
-  } catch (error) {
-    // Silent fail - optional auth
-  }
+  } catch (error) {}
 
   next();
 };

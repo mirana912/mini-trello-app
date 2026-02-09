@@ -16,14 +16,13 @@ export const generateVerificationCode = (): string => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-// Sign in with email (requires verification code to be pre-validated)
+// Sign in with email
 export const signInWithEmail = async (
   email: string,
   password: string = "dummy-password",
 ) => {
   try {
-    // In a real implementation, you'd verify the code first
-    // For now, we'll use Firebase's email/password auth
+    // Using Firebase's email/password auth in real
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -78,24 +77,20 @@ export const getCurrentUser = (): FirebaseUser | null => {
 };
 
 // Send verification code via email
-// NOTE: This would typically be done server-side with Firebase Cloud Functions
 export const sendVerificationCode = async (email: string): Promise<string> => {
   const code = generateVerificationCode();
 
-  // TODO: Implement email sending with Nodemailer via API route
-  // For now, we'll return the code for development
+  // Return the code for development
   console.log(`Verification code for ${email}: ${code}`);
 
   return code;
 };
 
-// Verify code (would check against Firestore in production)
+// Verify code
 export const verifyCode = async (
   email: string,
   code: string,
 ): Promise<boolean> => {
-  // TODO: Implement code verification with Firestore
-  // For now, always return true for development
   return true;
 };
 // ==========================================

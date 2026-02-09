@@ -2,9 +2,9 @@
 // ==========================================
 import { Request, Response } from "express";
 import nodemailer from "nodemailer";
-import { config } from "../config";
-import { getFirestore } from "../config/firebase";
-import { VerificationCodeData } from "../types";
+import { config } from "../config/index.js";
+import { getFirestore } from "../config/firebase.js";
+import { VerificationCodeData } from "../types/index.js";
 
 // Create email transporter
 const createTransporter = () => {
