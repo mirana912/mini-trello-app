@@ -51,7 +51,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleCreateBoard = async (e: React.FormEvent) => {
+  const handleCreateBoard = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!user) return;
 

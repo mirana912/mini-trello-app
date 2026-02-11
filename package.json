@@ -9,7 +9,7 @@
     "deploy": "npm run build && npm run export && firebase deploy",
     "start": "next start",
     "lint": "next lint",
-    "server": "ts-node-dev --respawn --transpile-only --project server/src/server.ts",
+    "server": "cd server && ts-node-dev --respawn --transpile-only src/server.ts",
     "server:build": "tsc -p server/tsconfig.json",
     "server:start": "node server/dist/server.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run server\""

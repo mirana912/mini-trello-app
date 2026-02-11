@@ -2,9 +2,9 @@
 // ==========================================
 import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { getFirebaseAuth } from "../config/firebase.js";
-import { config } from "../config/index.js";
-import { AuthRequest } from "../types/index.js";
+import { getFirebaseAuth } from "../config/firebase";
+import { config } from "../config/index";
+import { AuthRequest } from "../types/index";
 
 // Verify Firebase token
 export const verifyFirebaseToken = async (

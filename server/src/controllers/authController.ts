@@ -2,14 +2,9 @@
 // ==========================================
 import { Request, Response } from "express";
 import axios from "axios";
-import jwt from "jsonwebtoken";
-import { config } from "../config/index.js";
-import { getFirebaseAuth, getFirestore } from "../config/firebase.js";
-import {
-  GitHubTokenResponse,
-  GitHubUser,
-  ApiResponse,
-} from "../types/index.js";
+import { config } from "../config/index";
+import { getFirebaseAuth, getFirestore } from "../config/firebase";
+import { GitHubTokenResponse, GitHubUser, ApiResponse } from "../types/index";
 
 /**
  * Initiate GitHub OAuth flow

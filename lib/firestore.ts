@@ -14,6 +14,7 @@ import {
   Timestamp,
   serverTimestamp,
   QueryConstraint,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import type {
@@ -51,21 +52,16 @@ export const createUser = async (
   displayName?: string,
 ) => {
   const userRef = doc(db, COLLECTIONS.USERS, userId);
-  await updateDoc(userRef, {
-    email,
-    displayName: displayName || email.split("@")[0],
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp(),
-  }).catch(async () => {
-    // If user doesn't exist, create it
-    const userDocRef = doc(db, COLLECTIONS.USERS, userId);
-    await updateDoc(userDocRef, {
+  await setDoc(
+    userRef,
+    {
       email,
       displayName: displayName || email.split("@")[0],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
-    });
-  });
+    },
+    { merge: true },
+  );
 };
 
 export const getUser = async (userId: string): Promise<User | null> => {

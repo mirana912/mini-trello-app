@@ -8,7 +8,7 @@ dotenv.config({ path: path.resolve(__dirname, "../../../.env.local") });
 
 export const config = {
   // Server
-  port: process.env.PORT || 5000,
+  port: process.env.PORT || 5001,
   nodeEnv: process.env.NODE_ENV || "development",
 
   // Frontend URL
@@ -24,7 +24,7 @@ export const config = {
   githubClientSecret: process.env.GITHUB_CLIENT_SECRET || "",
   githubCallbackUrl:
     process.env.GITHUB_CALLBACK_URL ||
-    "http://localhost:5000/api/auth/github/callback",
+    "http://localhost:5001/api/auth/github/callback",
 
   // Firebase Admin
   firebaseProjectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "",
@@ -41,7 +41,7 @@ export const config = {
 
 // Validate required config
 export const validateConfig = () => {
-  const required = ["jwt", "githubClientId", "githubClientSecret"];
+  const required = ["jwtSecret", "githubClientId", "githubClientSecret"];
 
   const missing = required.filter((key) => !config[key as keyof typeof config]);
 
@@ -52,4 +52,5 @@ export const validateConfig = () => {
     console.warn("Some features may not work properly.");
   }
 };
+export default config;
 // ==========================================

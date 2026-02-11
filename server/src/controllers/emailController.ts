@@ -2,14 +2,14 @@
 // ==========================================
 import { Request, Response } from "express";
 import nodemailer from "nodemailer";
-import { config } from "../config/index.js";
-import { getFirestore } from "../config/firebase.js";
-import { VerificationCodeData } from "../types/index.js";
+import { config } from "../config/index";
+import { getFirestore } from "../config/firebase";
+import { VerificationCodeData } from "../types/index";
 
 // Create email transporter
 const createTransporter = () => {
   if (!config.emailUser || !config.emailPassword) {
-    console.warn("Email credentials not configured");
+    console.warn("Email credentials are not configured");
     return null;
   }
 
@@ -47,7 +47,7 @@ export const sendVerificationCode = async (req: Request, res: Response) => {
 
     // Generate verification code
     const code = generateCode();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
     // Store in Firestore
     const db = getFirestore();
@@ -85,7 +85,7 @@ export const sendVerificationCode = async (req: Request, res: Response) => {
 
       res.json({
         success: true,
-        message: "Verification code sent to email",
+        message: "Verification code is sent to email",
       });
     } else {
       // Development mode - return code in response
@@ -130,7 +130,7 @@ export const verifyCode = async (req: Request, res: Response) => {
     if (!codeDoc.exists) {
       return res.status(404).json({
         success: false,
-        error: "No verification code found for this email",
+        error: "No verification code is found for this email",
       });
     }
 
@@ -157,7 +157,7 @@ export const verifyCode = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      message: "Code verified successfully",
+      message: "Code is verified successfully",
     });
   } catch (error: any) {
     console.error("Verify code error:", error);
