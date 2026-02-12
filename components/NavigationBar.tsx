@@ -25,20 +25,14 @@ export default function NavigationBar({ onCreateBoard }: NavigationBarProps) {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="shadow-sm">
       <Container>
-        <Link href="/dashboard" passHref legacyBehavior>
-          <Navbar.Brand className="fw-bold">Mini Trello</Navbar.Brand>
-        </Link>
+        <Link href="/dashboard">Mini Trello</Link>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Link href="/dashboard" passHref legacyBehavior>
-              <Nav.Link>Dashboard</Nav.Link>
-            </Link>
-            <Link href="/dashboard/boards" passHref legacyBehavior>
-              <Nav.Link>My Boards</Nav.Link>
-            </Link>
+            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/dashboard/boards">My Boards</Link>
           </Nav>
 
           <Nav className="ms-auto align-items-center">
@@ -68,7 +62,7 @@ export default function NavigationBar({ onCreateBoard }: NavigationBarProps) {
                 <div className="text-muted small">{user?.email}</div>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <Link href="/dashboard/profile" passHref legacyBehavior>
+              <Link href="/dashboard/profile">
                 <NavDropdown.Item>
                   <FaUser className="me-2" />
                   Profile

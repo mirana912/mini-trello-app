@@ -127,7 +127,7 @@ export default function BoardDetailPage() {
     }
   };
 
-  const handleCreateCard = async (e: React.FormEvent) => {
+  const handleCreateCard = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!user) return;
 
@@ -143,7 +143,7 @@ export default function BoardDetailPage() {
     }
   };
 
-  const handleCreateTask = async (e: React.FormEvent) => {
+  const handleCreateTask = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!user || !selectedCard) return;
 

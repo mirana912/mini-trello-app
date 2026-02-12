@@ -18,7 +18,7 @@ import { FaPlus, FaUsers, FaTasks } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import NavigationBar from "@/components/NavigationBar";
-import { getUserBoards, createBoard, getBoardCards } from "@/lib/firestore";
+import { getUserBoards, createBoard } from "@/lib/firestore";
 import type { Board } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 
@@ -30,7 +30,7 @@ export default function DashboardPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newBoardName, setNewBoardName] = useState("");
   const [newBoardDescription, setNewBoardDescription] = useState("");
-  const [creating, setCreating] = useState(false);
+  const [creatingBoard, setCreatingBoard] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -53,24 +53,30 @@ export default function DashboardPage() {
 
   const handleCreateBoard = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user) {
+      alert("You must be logged in to create a board");
+      return;
+    }
 
-    setCreating(true);
+    setCreatingBoard(true);
     try {
       const boardId = await createBoard(
         newBoardName,
         newBoardDescription,
         user.uid,
       );
+      console.log("Board created with ID: ", boardId);
+
       setShowCreateModal(false);
       setNewBoardName("");
       setNewBoardDescription("");
+      await new Promise((resolve) => setTimeout(resolve, 500));
       router.push(`/dashboard/boards/${boardId}`);
     } catch (error) {
       console.error("Error creating board:", error);
       alert("Failed to create board. Please try again.");
     } finally {
-      setCreating(false);
+      setCreatingBoard(false);
     }
   };
 
@@ -222,8 +228,8 @@ export default function DashboardPage() {
               >
                 Cancel
               </Button>
-              <Button variant="primary" type="submit" disabled={creating}>
-                {creating ? "Creating..." : "Create Board"}
+              <Button variant="primary" type="submit" disabled={creatingBoard}>
+                {creatingBoard ? "Creating..." : "Create Board"}
               </Button>
             </Modal.Footer>
           </Form>
