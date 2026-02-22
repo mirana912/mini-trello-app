@@ -22,22 +22,27 @@ import { getUserBoards, createBoard } from "@/lib/firestore";
 import type { Board } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 
+// Main dashboard component
 export default function DashboardPage() {
   const router = useRouter();
   const { user } = useAuth();
+  // State for boards list
   const [boards, setBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState(true);
+  // Modal & form states
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newBoardName, setNewBoardName] = useState("");
   const [newBoardDescription, setNewBoardDescription] = useState("");
   const [creatingBoard, setCreatingBoard] = useState(false);
 
+  // Load user's boards when component mounts
   useEffect(() => {
     if (user) {
       loadBoards();
     }
   }, [user]);
 
+  // Load all boards for current user
   const loadBoards = async () => {
     if (!user) return;
 
@@ -51,8 +56,10 @@ export default function DashboardPage() {
     }
   };
 
+  // Handle creating a new board
   const handleCreateBoard = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    // Check authentication of user
     if (!user) {
       alert("You must be logged in to create a board");
       return;
@@ -60,18 +67,19 @@ export default function DashboardPage() {
 
     setCreatingBoard(true);
     try {
+      // Create board in databse
       const boardId = await createBoard(
         newBoardName,
         newBoardDescription,
         user.uid,
       );
       console.log("Board created with ID: ", boardId);
-
+      // Close modal & reset form
       setShowCreateModal(false);
       setNewBoardName("");
       setNewBoardDescription("");
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      router.push(`/dashboard/boards/${boardId}`);
+      // Refresh board list
+      await loadBoards();
     } catch (error) {
       console.error("Error creating board:", error);
       alert("Failed to create board. Please try again.");

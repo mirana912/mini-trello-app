@@ -91,6 +91,17 @@ export const getAllUsers = async (): Promise<User[]> => {
   })) as User[];
 };
 
+export const updateUser = async (
+  userId: string,
+  data: Partial<User>,
+): Promise<void> => {
+  const userRef = doc(db, COLLECTIONS.USERS, userId);
+  await updateDoc(userRef, {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
+};
+
 // BOARD OPERATIONS
 export const createBoard = async (
   name: string,
@@ -199,19 +210,17 @@ export const getCard = async (cardId: string): Promise<Card | null> => {
 
 export const getBoardCards = async (boardId: string): Promise<Card[]> => {
   const cardsRef = collection(db, COLLECTIONS.CARDS);
-  const q = query(
-    cardsRef,
-    where("boardId", "==", boardId),
-    orderBy("createdAt", "desc"),
-  );
+  const q = query(cardsRef, where("boardId", "==", boardId));
   const snapshot = await getDocs(q);
 
-  return snapshot.docs.map((doc) => ({
+  const cards = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
     createdAt: timestampToDate(doc.data().createdAt),
     updatedAt: timestampToDate(doc.data().updatedAt),
   })) as Card[];
+
+  return cards.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 };
 
 export const getUserCards = async (userId: string): Promise<Card[]> => {
@@ -305,14 +314,10 @@ export const getTask = async (taskId: string): Promise<Task | null> => {
 
 export const getCardTasks = async (cardId: string): Promise<Task[]> => {
   const tasksRef = collection(db, COLLECTIONS.TASKS);
-  const q = query(
-    tasksRef,
-    where("cardId", "==", cardId),
-    orderBy("order", "asc"),
-  );
+  const q = query(tasksRef, where("cardId", "==", cardId));
   const snapshot = await getDocs(q);
 
-  return snapshot.docs.map((doc) => ({
+  const tasks = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
     createdAt: timestampToDate(doc.data().createdAt),
@@ -321,6 +326,8 @@ export const getCardTasks = async (cardId: string): Promise<Task[]> => {
       ? timestampToDate(doc.data().deadline)
       : undefined,
   })) as Task[];
+
+  return tasks.sort((a, b) => a.order - b.order);
 };
 
 export const updateTask = async (

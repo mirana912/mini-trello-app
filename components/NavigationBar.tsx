@@ -25,14 +25,17 @@ export default function NavigationBar({ onCreateBoard }: NavigationBarProps) {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="shadow-sm">
       <Container>
-        <Link href="/dashboard">Mini Trello</Link>
+        <Navbar.Brand href="/dashboard" className="fw-bold">
+          Mini Trello
+        </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Link href="/dashboard">Dashboard</Link>
-            <Link href="/dashboard/boards">My Boards</Link>
+            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+            <Nav.Link href="/dashboard/boards">My Boards</Nav.Link>
+            <Nav.Link href="/dashboard/users">Users</Nav.Link>
           </Nav>
 
           <Nav className="ms-auto align-items-center">
@@ -62,12 +65,12 @@ export default function NavigationBar({ onCreateBoard }: NavigationBarProps) {
                 <div className="text-muted small">{user?.email}</div>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <Link href="/dashboard/profile">
-                <NavDropdown.Item>
-                  <FaUser className="me-2" />
-                  Profile
-                </NavDropdown.Item>
-              </Link>
+              <NavDropdown.Item
+                onClick={() => router.push("/dashboard/profile")}
+              >
+                <FaUser className="me-2" />
+                Profile
+              </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleSignOut}>
                 <FaSignOutAlt className="me-2" />
